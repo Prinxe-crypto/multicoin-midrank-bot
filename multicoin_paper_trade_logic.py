@@ -66,8 +66,16 @@ def get_settled_status(tickers):
 
 
 def load_positions():
-    open_pos = pd.read_csv(OPEN_POSITIONS_PATH) if OPEN_POSITIONS_PATH.exists() else pd.DataFrame(columns=COLUMNS_OPEN)
-    closed_pos = pd.read_csv(CLOSED_POSITIONS_PATH) if CLOSED_POSITIONS_PATH.exists() else pd.DataFrame(columns=COLUMNS_CLOSED)
+    open_pos = (
+        pd.read_csv(OPEN_POSITIONS_PATH)
+        if OPEN_POSITIONS_PATH.exists() and OPEN_POSITIONS_PATH.stat().st_size > 0
+        else pd.DataFrame(columns=COLUMNS_OPEN)
+    )
+    closed_pos = (
+        pd.read_csv(CLOSED_POSITIONS_PATH)
+        if CLOSED_POSITIONS_PATH.exists() and CLOSED_POSITIONS_PATH.stat().st_size > 0
+        else pd.DataFrame(columns=COLUMNS_CLOSED)
+    )
     return open_pos, closed_pos
 
 
